@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Season extends Model
+class Picking extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    public function labour()
+    {
+        return $this->belongsTo(User::class, 'labour_id');
+    }
 }

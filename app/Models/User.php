@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
+        'user_id',
     ];
 
     /**
@@ -40,4 +44,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    const ROLES = [
+        'LANDLORD' => 1,
+        'FARMER' => 2,
+        'LABOUR' => 3,
+    ];
+
+    public function season()
+    {
+        return $this->hasMany(Season::class);
+    }
+
+    public function pickingnumber()
+    {
+        return $this->hasMany(Pickingnumber::class, 'landlord_id');
+    }
 }

@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\FarmerController;
+use App\Http\Controllers\LabourController;
+use App\Http\Controllers\PickingController;
+use App\Http\Controllers\PickingnumberController;
+use App\Http\Controllers\SeasonController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +17,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::resource('pickings', PickingController::class);
+
+Route::resource('seasons', SeasonController::class);
+
+Route::resource('farmers', FarmerController::class);
+
+Route::resource('labours', LabourController::class);
+
+Route::resource('pickingnumbers', PickingnumberController::class);
 
 Route::get('/', function () {
     return view('welcome');

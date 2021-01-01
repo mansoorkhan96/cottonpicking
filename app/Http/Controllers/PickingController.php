@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Season;
+use App\Models\Picking;
+use App\Models\Pickingnumber;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-class SeasonController extends Controller
+class PickingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,18 @@ class SeasonController extends Controller
      */
     public function index()
     {
-        $seasons = auth()->user()->season()->get()->toArray();
+        $pickingnumber = Pickingnumber::with(['season', 'farmer'])->findOrFail(request()->id)->toArray();
 
-        return view('seasons.index', compact(['seasons']));
+        $pickings = Picking::with('labour')->where('pickingnumber_id', request()->id)->get()->toArray();
+        $pickings_by_labour = collect($pickings)->groupBy('labour_id');
+
+        $picking_dates = Picking::select([
+            DB::raw('date'),
+            DB::raw('sum(kgs_picked) as daily_total'),
+        ])
+        ->where('pickingnumber_id', request()->id)->groupBy('date')->pluck('daily_total', 'date');
+
+        return view('pickings.index', compact(['pickings_by_labour', 'picking_dates', 'pickingnumber']));
     }
 
     /**
@@ -27,7 +37,6 @@ class SeasonController extends Controller
      */
     public function create()
     {
-        return view('seasons.create');
     }
 
     /**
@@ -37,14 +46,6 @@ class SeasonController extends Controller
      */
     public function store(Request $request)
     {
-        $data = request()->validate([
-            'name' => 'required',
-            'from_to' => 'required',
-        ]);
-
-        auth()->user()->season()->create($data);
-
-        return redirect()->route('seasons.index')->with('success', 'Added successfully!');
     }
 
     /**
@@ -52,7 +53,7 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Season $season)
+    public function show(Picking $picking)
     {
     }
 
@@ -61,9 +62,8 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Season $season)
+    public function edit(Picking $picking)
     {
-        return view('seasons.edit', compact(['season']));
     }
 
     /**
@@ -71,16 +71,8 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Season $season)
+    public function update(Request $request, Picking $picking)
     {
-        $data = request()->validate([
-            'name' => 'required',
-            'from_to' => 'required',
-        ]);
-
-        $season->update($data);
-
-        return redirect()->route('seasons.index')->with('success', 'Updated successfully!');
     }
 
     /**
@@ -88,7 +80,7 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Season $season)
+    public function destroy(Picking $picking)
     {
     }
 }
