@@ -9,6 +9,8 @@ class Picking extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function labour()
     {
         return $this->belongsTo(User::class, 'labour_id');

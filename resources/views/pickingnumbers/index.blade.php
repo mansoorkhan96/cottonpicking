@@ -17,9 +17,9 @@
                     <table id="myTable" class="table table-light table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th>Season</th>
+                                {{-- <th>Season</th> --}}
                                 <th>Farmer</th>
-                                <th>Picking Number</th>
+                                <th>Title</th>
                                 <th>Sell Rate</th>
                                 <th>Labour Pay Rate</th>
                                 <th>Actions</th>
@@ -28,11 +28,11 @@
                         <tbody>
                             @foreach ($pickingnumbers as $item)
                             <tr>
-                                <td>{{ $item['season']['name'] }}</td>
+                                {{-- <td>{{ $item['season']['name'] }}</td> --}}
                                 <td>{{ $item['farmer']['name'] }}</td>
                                 <td>{{ $item['title'] }}</td>
-                                <td>{{ $item['sell_per_kg'] }}</td>
-                                <td>{{ $item['labour_pay_per_kg'] }}</td>
+                                <td>{{ $item['sell_per_kg'] ?? 0 }}/kg | {{ $item['sell_per_kg'] * 40 }}/mann</td>
+                                <td>{{ $item['labour_pay_per_kg'] }}/kg | {{ $item['labour_pay_per_kg'] * 40 }}/mann</td>
                                 <td>
                                     <a href="{{ route('pickingnumbers.edit', $item['id']) }}" class="text-white btn btn-info btn-sm">Edit</a>
                                     <a href="{{ route('pickings.index', ['id' => $item['id']]) }}" class="text-white btn btn-info btn-sm">View Pickings</a>

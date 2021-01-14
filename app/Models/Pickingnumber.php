@@ -11,10 +11,10 @@ class Pickingnumber extends Model
 
     protected $guarded = [];
 
-    public function season()
-    {
-        return $this->belongsTo(Season::class);
-    }
+    // public function season()
+    // {
+    //     return $this->belongsTo(Season::class);
+    // }
 
     public function farmer()
     {

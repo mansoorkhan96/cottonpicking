@@ -17,7 +17,7 @@ class PickingnumberSeeder extends Seeder
         DB::table('pickingnumbers')->insert([
             [
                 'landlord_id' => 1,
-                'season_id' => 1,
+                // 'season_id' => 1,
                 'farmer_id' => 2,
                 'title' => 'Picking-1',
                 'sell_per_kg' => 112.5,
@@ -25,7 +25,7 @@ class PickingnumberSeeder extends Seeder
             ],
             [
                 'landlord_id' => 1,
-                'season_id' => 1,
+                // 'season_id' => 1,
                 'farmer_id' => 2,
                 'title' => 'Picking-2',
                 'sell_per_kg' => 114.5,

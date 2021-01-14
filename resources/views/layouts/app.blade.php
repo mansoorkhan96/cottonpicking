@@ -20,6 +20,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/css/all.min.css') }}">
+
     {{-- Page CSS --}}
     @yield('css')
 </head>
@@ -38,9 +40,9 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @auth
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link" href="{{ route('seasons.index') }}">{{ __('Seasons') }}</a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('farmers.index') }}">{{ __('Farmers') }}</a>
                         </li>

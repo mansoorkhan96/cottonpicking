@@ -11,7 +11,7 @@
                     <form method="POST" action="{{ route('pickingnumbers.store') }}">
                         @csrf
 
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <label for="season_id" class="col-md-4 col-form-label text-md-right">{{ __('Choose Season') }}</label>
 
                             <div class="col-md-6">
@@ -23,7 +23,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group row">
                             <label for="farmer_id" class="col-md-4 col-form-label text-md-right">{{ __('Choose Farmer') }}</label>
@@ -57,7 +57,7 @@
                             <label for="sell_per_kg" class="col-md-4 col-form-label text-md-right">{{ __('Sell Rate/Kgs') }}</label>
 
                             <div class="col-md-6">
-                                <input id="sell_per_kg" type="text" class="form-control @error('sell_per_kg') is-invalid @enderror" name="sell_per_kg" value="{{ old('sell_per_kg') }}" placeholder="122.5" required autocomplete="sell_per_kg" autofocus>
+                                <input id="sell_per_kg" type="text" class="form-control @error('sell_per_kg') is-invalid @enderror" name="sell_per_kg" value="{{ old('sell_per_kg') }}" placeholder="122.5" autocomplete="sell_per_kg" autofocus>
 
                                 @error('sell_per_kg')
                                     <span class="invalid-feedback" role="alert">

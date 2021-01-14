@@ -5,94 +5,88 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Edit Picking Number') }}</div>
+                <div class="card-header">{{ __('Edit Picking') }} for [{{ $date }}]</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('pickingnumbers.update', $pickingnumber->id) }}">
+                    <form id="new_picking_form" action="{{ route('pickings.update', $pickingnumber_id) }}" method="POST">
                         @csrf
                         @method('put')
+                        <input type="hidden" name="date" value="{{ $date }}">
 
-                        <div class="form-group row">
-                            <label for="season_id" class="col-md-4 col-form-label text-md-right">{{ __('Choose Season') }}</label>
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th width="50%">Name</th>
+                                    <th width="50%">KGs Picked</th>
+                                </tr>
+                            </thead>
+                            <tbody id="labours">
+                                @foreach ($pickings as $item)
+                                <tr>
+                                    <td>{{ $item->name }}</td>
+                                    <td class="p-1">
+                                        <div class="form-group mb-0">
+                                            <input style="width: 84%" type="number" class="form-control kgs_picked" value="{{ $item->kgs_picked }}" name="kgs_picked[{{ $item->labour_id }}]" required>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
 
-                            <div class="col-md-6">
-                                {!! Form::select('season_id', $seasons, old('season_id') ?? $pickingnumber->season_id, ['class' => 'form-control']) !!}
-
-                                @error('season_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="farmer_id" class="col-md-4 col-form-label text-md-right">{{ __('Choose Farmer') }}</label>
-
-                            <div class="col-md-6">
-                                {!! Form::select('farmer_id', $farmers, old('farmer_id') ?? $pickingnumber->farmer_id, ['class' => 'form-control']) !!}
-
-                                @error('farmer_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="title" class="col-md-4 col-form-label text-md-right">{{ __('Title') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title')  ?? $pickingnumber->title }}" required autocomplete="title" autofocus>
-
-                                @error('title')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="sell_per_kg" class="col-md-4 col-form-label text-md-right">{{ __('Sell Rate/Kgs') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="sell_per_kg" type="text" class="form-control @error('sell_per_kg') is-invalid @enderror" name="sell_per_kg" value="{{ old('sell_per_kg') ?? $pickingnumber->sell_per_kg }}" placeholder="122.5" required autocomplete="sell_per_kg" autofocus>
-
-                                @error('sell_per_kg')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="labour_pay_per_kg" class="col-md-4 col-form-label text-md-right">{{ __('Labour Pay Rate/Kgs') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="labour_pay_per_kg" type="text" class="form-control @error('labour_pay_per_kg') is-invalid @enderror" name="labour_pay_per_kg" value="{{ old('labour_pay_per_kg') ?? $pickingnumber->labour_pay_per_kg }}" placeholder="12.5" required autocomplete="labour_pay_per_kg" autofocus>
-
-                                @error('labour_pay_per_kg')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Save') }}
-                                </button>
-                            </div>
-                        </div>
+                                @foreach ($other_labour as $item)
+                                <tr class="new_labour" style="display: none" id="labour_{{ $item['id'] }}">
+                                    <td>{{ $item['name'] }}</td>
+                                    <td class="p-1">
+                                        <div class="form-group mb-0">
+                                            <input style="width: 84%" type="number" class="form-control d-inline-block new_labour_kgs_picked" disabled name="kgs_picked[{{ $item['id'] }}]" required>
+                                            <button type="button" class="btn btn-success btn-sm select_labour"><i class="fas fa-check"></i></button>
+                                            <button style="display: none !important" type="button" class="btn btn-danger btn-sm deselect_labour"><i class="far fa-times-circle"></i></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </form>
+                    @if(count($other_labour) > 0)
+                    <div>
+                        <button id="add_new_labour" type="button" data-toggle="modal" data-target="#newLabourModal" class="btn btn-primary btn-sm">Add Labour</button>
+                        <p class="d-inline-block"> Want to register a new labour? <a href="{{ route('labours.create') }}">Click Here</a></p>
+                    </div>
+                    @endif
+
+                    <div class="form-group mb-0 text-right">
+                        <button type="submit" form="new_picking_form" class="btn btn-success">
+                            {{ __('Save Picking') }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $('#add_new_labour').click(function() {
+                $('.new_labour').show()
+                $(this).hide()
+            })
+
+            $('.select_labour').click(function() {
+                $(this).siblings('.deselect_labour').show()
+                $(this).siblings('.new_labour_kgs_picked').attr('disabled', false)
+
+                $(this).hide()
+            })
+
+            $('.deselect_labour').click(function() {
+                $(this).siblings('.select_labour').show()
+                $(this).siblings('.new_labour_kgs_picked').attr('disabled', true)
+
+                $(this).hide()
+            })
+        })
+    </script>
 @endsection

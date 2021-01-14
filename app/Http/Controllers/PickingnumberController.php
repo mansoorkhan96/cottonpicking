@@ -15,7 +15,7 @@ class PickingnumberController extends Controller
      */
     public function index()
     {
-        $pickingnumbers = auth()->user()->pickingnumber()->with(['season', 'farmer'])->get()->toArray();
+        $pickingnumbers = auth()->user()->pickingnumber()->with(['farmer'])->latest()->get()->toArray();
 
         return view('pickingnumbers.index', compact(['pickingnumbers']));
     }
@@ -44,10 +44,10 @@ class PickingnumberController extends Controller
     public function store(Request $request)
     {
         $data = request()->validate([
-            'season_id' => 'required',
+            // 'season_id' => 'required',
             'farmer_id' => 'required',
             'title' => 'required',
-            'sell_per_kg' => 'required',
+            'sell_per_kg' => 'nullable',
             'labour_pay_per_kg' => 'required',
         ]);
 
@@ -89,10 +89,10 @@ class PickingnumberController extends Controller
     public function update(Request $request, Pickingnumber $pickingnumber)
     {
         $data = request()->validate([
-            'season_id' => 'required',
+            // 'season_id' => 'required',
             'farmer_id' => 'required',
             'title' => 'required',
-            'sell_per_kg' => 'required',
+            'sell_per_kg' => 'nullable',
             'labour_pay_per_kg' => 'required',
         ]);
 
