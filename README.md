@@ -14,3 +14,7 @@ Picking data is show in a table with:
 - Daily total picking
 - Labour total payment (for a perticular PickingNumber/Khaata)
 - Total kgs picked and total payment (for a perticular PickingNumber/Khaata)
+
+## Pickings Table Demo
+
+<img src="./pickings_table_demo.png">
