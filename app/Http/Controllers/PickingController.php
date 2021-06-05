@@ -21,9 +21,8 @@ class PickingController extends Controller
         $pickingnumber = Pickingnumber::with(['farmer'])
             ->findOrFail(request()->id)
             ->toArray();
-
-        $sql = 'SELECT labour_id, name
-            FROM pickings
+        // :TODO: validate id
+        $sql = 'SELECT labour_id, name FROM pickings
             JOIN users on users.id = pickings.labour_id AND users.is_active = 1
             WHERE pickingnumber_id = '.request()->id.' AND date IN (SELECT MAX(date) FROM pickings)';
 
@@ -87,6 +86,8 @@ class PickingController extends Controller
             'date' => ['required'],
             'kgs_picked' => ['required', 'array'],
             'kgs_picked.*' => ['required', 'numeric', 'min:0'],
+        ], [
+            'pickingnumber_id.*' => 'There is already a Picking Number for this date.',
         ]);
 
         $pickings = [];
@@ -120,6 +121,8 @@ class PickingController extends Controller
      */
     public function edit($pickingnumber_id)
     {
+        // TODO: validate if id is int
+        // TODO: autorize permissions
         $date = request()->date;
 
         $sql = "SELECT *, SUM(if(date = '$date',kgs_picked,0)) as '$date' FROM pickings JOIN users on users.id = pickings.labour_id WHERE pickingnumber_id = $pickingnumber_id AND pickings.date = '$date' GROUP BY labour_id";
