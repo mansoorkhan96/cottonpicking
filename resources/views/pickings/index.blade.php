@@ -127,7 +127,10 @@
                 </table>
             </form>
             <div>
-                <button id="add_new_labour" type="button" data-toggle="modal" data-target="#newLabourModal" class="btn btn-primary btn-sm">Add Labour</button>
+                @if(count($other_labour) > 0)
+                    <button id="add_new_labour" type="button" data-toggle="modal" data-target="#newLabourModal" class="btn btn-primary btn-sm">Add Labour</button>
+                @endif
+
                 <p class="d-inline-block"> Want to register a new labour? <a href="{{ route('labours.create') }}">Click Here</a></p>
             </div>
         </div>

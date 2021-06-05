@@ -82,7 +82,7 @@ class PickingController extends Controller
             'pickingnumber_id' => Rule::unique('pickings')->where(function ($query) use ($request) {
                 return $query->where('pickingnumber_id', $request->pickingnumber_id)
                     ->where('date', $request->date)
-                    ->whereIn('labour_id', array_keys($request->kgs_picked));
+                    ->whereIn('labour_id', array_keys($request->kgs_picked ?? []));
             }),
             'date' => ['required'],
             'kgs_picked' => ['required', 'array'],

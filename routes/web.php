@@ -17,13 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('pickings', PickingController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('pickings', PickingController::class);
 
-Route::resource('farmers', FarmerController::class);
+    Route::resource('farmers', FarmerController::class);
 
-Route::resource('labours', LabourController::class);
+    Route::resource('labours', LabourController::class);
 
-Route::resource('pickingnumbers', PickingnumberController::class);
+    Route::resource('pickingnumbers', PickingnumberController::class);
+});
 
 Route::get('/', function () {
     return view('welcome');
