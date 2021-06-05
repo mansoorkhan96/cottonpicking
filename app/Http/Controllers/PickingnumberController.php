@@ -27,13 +27,12 @@ class PickingnumberController extends Controller
      */
     public function create()
     {
-        $seasons = auth()->user()->season()->latest()->pluck('name', 'id');
         $farmers = User::where('user_id', auth()->user()->id)
-        ->where('role_id', User::ROLES['FARMER'])
-        ->latest()
-        ->pluck('name', 'id');
+            ->where('role_id', User::ROLES['FARMER'])
+            ->latest()
+            ->pluck('name', 'id');
 
-        return view('pickingnumbers.create', compact(['seasons', 'farmers']));
+        return view('pickingnumbers.create', compact(['farmers']));
     }
 
     /**
@@ -44,11 +43,10 @@ class PickingnumberController extends Controller
     public function store(Request $request)
     {
         $data = request()->validate([
-            // 'season_id' => 'required',
             'farmer_id' => 'required',
             'title' => 'required',
-            'sell_per_kg' => 'nullable',
-            'labour_pay_per_kg' => 'required',
+            'sell_per_kg' => 'nullable|numeric|min:0',
+            'labour_pay_per_kg' => 'required|numeric|min:0',
         ]);
 
         auth()->user()->pickingnumber()->create($data);
@@ -72,13 +70,12 @@ class PickingnumberController extends Controller
      */
     public function edit(Pickingnumber $pickingnumber)
     {
-        $seasons = auth()->user()->season()->latest()->pluck('name', 'id');
         $farmers = User::where('user_id', auth()->user()->id)
-        ->where('role_id', User::ROLES['FARMER'])
-        ->latest()
-        ->pluck('name', 'id');
+            ->where('role_id', User::ROLES['FARMER'])
+            ->latest()
+            ->pluck('name', 'id');
 
-        return view('pickingnumbers.edit', compact(['pickingnumber', 'seasons', 'farmers']));
+        return view('pickingnumbers.edit', compact(['pickingnumber', 'farmers']));
     }
 
     /**
@@ -89,11 +86,10 @@ class PickingnumberController extends Controller
     public function update(Request $request, Pickingnumber $pickingnumber)
     {
         $data = request()->validate([
-            // 'season_id' => 'required',
             'farmer_id' => 'required',
             'title' => 'required',
-            'sell_per_kg' => 'nullable',
-            'labour_pay_per_kg' => 'required',
+            'sell_per_kg' => 'nullable|numeric|min:0',
+            'labour_pay_per_kg' => 'required|numeric|min:0',
         ]);
 
         $pickingnumber->update($data);

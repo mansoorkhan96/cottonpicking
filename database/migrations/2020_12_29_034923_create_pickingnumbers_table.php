@@ -16,7 +16,6 @@ class CreatePickingnumbersTable extends Migration
         Schema::create('pickingnumbers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('landlord_id')->constrained('users');
-            // $table->foreignId('season_id')->constrained();
             $table->foreignId('farmer_id')->constrained('users');
             $table->string('title');
             $table->double('sell_per_kg')->nullable();

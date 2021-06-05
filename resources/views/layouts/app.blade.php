@@ -40,18 +40,15 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @auth
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ route('seasons.index') }}">{{ __('Seasons') }}</a>
-                        </li> --}}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('farmers.index') }}">{{ __('Farmers') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('labours.index') }}">{{ __('Labours') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('pickingnumbers.index') }}">{{ __('Picking Numbers') }}</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('farmers.index') }}">{{ __('Farmers') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('labours.index') }}">{{ __('Labours') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('pickingnumbers.index') }}">{{ __('Picking Numbers') }}</a>
+                            </li>
                         @endauth
                     </ul>
 

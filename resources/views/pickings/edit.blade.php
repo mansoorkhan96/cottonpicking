@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Edit Picking') }} for [{{ $date }}]</div>
+                <div class="card-header">{{ __('Edit Picking for') }} [{{ $date }}]</div>
 
                 <div class="card-body">
                     <form id="new_picking_form" action="{{ route('pickings.update', $pickingnumber_id) }}" method="POST">
@@ -26,7 +26,7 @@
                                     <td>{{ $item->name }}</td>
                                     <td class="p-1">
                                         <div class="form-group mb-0">
-                                            <input style="width: 84%" type="number" class="form-control kgs_picked" value="{{ $item->kgs_picked }}" name="kgs_picked[{{ $item->labour_id }}]" required>
+                                            <input style="width: 84%" type="number" min="0" step=".01" class="form-control kgs_picked" value="{{ $item->kgs_picked }}" name="kgs_picked[{{ $item->labour_id }}]" required>
                                         </div>
                                     </td>
                                 </tr>
@@ -37,7 +37,7 @@
                                     <td>{{ $item['name'] }}</td>
                                     <td class="p-1">
                                         <div class="form-group mb-0">
-                                            <input style="width: 84%" type="number" class="form-control d-inline-block new_labour_kgs_picked" disabled name="kgs_picked[{{ $item['id'] }}]" required>
+                                            <input style="width: 84%" type="number" min="0" step=".01" class="form-control d-inline-block new_labour_kgs_picked" disabled name="kgs_picked[{{ $item['id'] }}]" required>
                                             <button type="button" class="btn btn-success btn-sm select_labour"><i class="fas fa-check"></i></button>
                                             <button style="display: none !important" type="button" class="btn btn-danger btn-sm deselect_labour"><i class="far fa-times-circle"></i></i></button>
                                         </div>

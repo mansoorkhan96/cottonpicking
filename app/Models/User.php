@@ -51,11 +51,6 @@ class User extends Authenticatable
         'LABOUR' => 3,
     ];
 
-    public function season()
-    {
-        return $this->hasMany(Season::class);
-    }
-
     public function pickingnumber()
     {
         return $this->hasMany(Pickingnumber::class, 'landlord_id');

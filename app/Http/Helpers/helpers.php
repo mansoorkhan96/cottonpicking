@@ -1,6 +1,6 @@
 <?php
 
-    function toMann(int $kgs)
+    function toMann(float $kgs)
     {
         if ($kgs > 39) {
             $total_mann = $kgs / 40;

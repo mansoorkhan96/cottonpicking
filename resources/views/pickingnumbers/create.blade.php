@@ -11,20 +11,6 @@
                     <form method="POST" action="{{ route('pickingnumbers.store') }}">
                         @csrf
 
-                        {{-- <div class="form-group row">
-                            <label for="season_id" class="col-md-4 col-form-label text-md-right">{{ __('Choose Season') }}</label>
-
-                            <div class="col-md-6">
-                                {!! Form::select('season_id', $seasons, old('season_id'), ['class' => 'form-control']) !!}
-
-                                @error('season_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> --}}
-
                         <div class="form-group row">
                             <label for="farmer_id" class="col-md-4 col-form-label text-md-right">{{ __('Choose Farmer') }}</label>
 

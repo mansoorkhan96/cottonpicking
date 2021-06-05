@@ -18,12 +18,14 @@ class PickingController extends Controller
      */
     public function index()
     {
-        $pickingnumber = Pickingnumber::with(['farmer'])->findOrFail(request()->id)->toArray();
+        $pickingnumber = Pickingnumber::with(['farmer'])
+            ->findOrFail(request()->id)
+            ->toArray();
 
         $sql = 'SELECT labour_id, name
-        FROM pickings
-        JOIN users on users.id = pickings.labour_id
-        WHERE pickingnumber_id = '.request()->id.' AND date IN (SELECT MAX(date) FROM pickings)';
+            FROM pickings
+            JOIN users on users.id = pickings.labour_id
+            WHERE pickingnumber_id = '.request()->id.' AND date IN (SELECT MAX(date) FROM pickings)';
 
         $current_picking_labour = DB::select($sql);
 
@@ -31,13 +33,20 @@ class PickingController extends Controller
             return $item->labour_id;
         }, $current_picking_labour);
 
-        $other_labour = User::where('role_id', User::ROLES['LABOUR'])->whereNotIn('id', $current_picking_labour_ids)->select('name', 'id')->get()->toArray();
+        $other_labour = User::where('role_id', User::ROLES['LABOUR'])
+            ->whereNotIn('id', $current_picking_labour_ids)
+            ->select('name', 'id')
+            ->get()
+            ->toArray();
 
         $picking_dates = Picking::select([
-            DB::raw('date'),
-            DB::raw('sum(kgs_picked) as daily_total'),
-        ])
-        ->where('pickingnumber_id', request()->id)->groupBy('date')->pluck('daily_total', 'date')->toArray();
+                DB::raw('date'),
+                DB::raw('sum(kgs_picked) as daily_total'),
+            ])
+            ->where('pickingnumber_id', request()->id)
+            ->groupBy('date')
+            ->pluck('daily_total', 'date')
+            ->toArray();
 
         $sql = 'SELECT *';
         foreach ($picking_dates as $date => $item) {
@@ -76,6 +85,7 @@ class PickingController extends Controller
             }),
             'date' => ['required'],
             'kgs_picked' => ['required', 'array'],
+            'kgs_picked.*' => ['required', 'numeric', 'min:0'],
         ]);
 
         $pickings = [];
@@ -118,7 +128,11 @@ class PickingController extends Controller
             return $item->labour_id;
         }, $pickings);
 
-        $other_labour = User::where('role_id', User::ROLES['LABOUR'])->whereNotIn('id', $current_picking_labour_ids)->select('name', 'id')->get()->toArray();
+        $other_labour = User::where('role_id', User::ROLES['LABOUR'])
+            ->whereNotIn('id', $current_picking_labour_ids)
+            ->select('name', 'id')
+            ->get()
+            ->toArray();
 
         return view('pickings.edit', compact(['pickingnumber_id', 'date', 'pickings', 'other_labour']));
     }
@@ -130,20 +144,18 @@ class PickingController extends Controller
      */
     public function update(Request $request, $pickingnumber_id)
     {
-        $data = request()->validate([
+        request()->validate([
             'date' => ['required'],
             'kgs_picked' => ['required', 'array'],
+            'kgs_picked.*' => ['required', 'numeric', 'min:0'],
         ]);
 
-        $pickings = [];
         foreach (request()->kgs_picked as $key => $item) {
             Picking::updateOrCreate(
                 ['pickingnumber_id' => $pickingnumber_id, 'date' => request()->date, 'labour_id' => $key],
                 ['kgs_picked' => $item]
             );
         }
-
-        // DB::table('pickings')->insert($pickings);
 
         return redirect()->route('pickings.index', ['id' => $pickingnumber_id])->with('success', 'Updated successfully!');
     }

@@ -17,9 +17,9 @@ class FarmerController extends Controller
     public function index()
     {
         $farmers = User::where('user_id', auth()->user()->id)
-        ->where('role_id', User::ROLES['FARMER'])
-        ->get()
-        ->toArray();
+            ->where('role_id', User::ROLES['FARMER'])
+            ->get()
+            ->toArray();
 
         return view('farmers.index', compact(['farmers']));
     }

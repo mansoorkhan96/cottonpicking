@@ -38,7 +38,7 @@
                                         <td>{{ toMann($item->$date) }}</td>
                                     @endforeach
                                     <th>{{ toMann($labour_total) }}</th>
-                                    <th>{{ number_format($labour_total * $pickingnumber['labour_pay_per_kg'] ?? 0, 2) }}</th>
+                                    <th>Rs {{ number_format($labour_total * $pickingnumber['labour_pay_per_kg'] ?? 0, 2) }}</th>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -50,7 +50,7 @@
                                 <th>{{ toMann($daily_total) }}</th>
                             @endforeach
                             <th>{{ toMann($picking_number_total) }}</th>
-                            <th>{{ number_format($picking_number_total * $pickingnumber['labour_pay_per_kg'] ?? 0, 2) }}</th>
+                            <th>Rs {{ number_format($picking_number_total * $pickingnumber['labour_pay_per_kg'] ?? 0, 2) }}</th>
                         </tfoot>
                     </table>
                 </div>
@@ -90,7 +90,7 @@
                             <td>{{ $item->name }}</td>
                             <td class="p-1">
                                 <div class="form-group mb-0">
-                                    <input style="width: 84%" type="number" class="form-control kgs_picked" name="kgs_picked[{{ $item->labour_id }}]" required>
+                                    <input style="width: 84%" type="number" min="0" step=".01" class="form-control kgs_picked" name="kgs_picked[{{ $item->labour_id }}]" required>
                                 </div>
                             </td>
                         </tr>
@@ -101,9 +101,24 @@
                             <td>{{ $item['name'] }}</td>
                             <td class="p-1">
                                 <div class="form-group mb-0">
-                                    <input style="width: 84%" type="number" class="form-control d-inline-block new_labour_kgs_picked" disabled name="kgs_picked[{{ $item['id'] }}]" required>
-                                    <button type="button" class="btn btn-success btn-sm select_labour"><i class="fas fa-check"></i></button>
-                                    <button style="display: none !important" type="button" class="btn btn-danger btn-sm deselect_labour"><i class="far fa-times-circle"></i></i></button>
+                                    <input
+                                        style="width: 84%"
+                                        type="number"
+                                        min="0"
+                                        step=".01"
+                                        class="form-control d-inline-block new_labour_kgs_picked"
+                                        disabled
+                                        name="kgs_picked[{{ $item['id'] }}]"
+                                        required
+                                    />
+
+                                    <button type="button" class="btn btn-success btn-sm select_labour">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+
+                                    <button style="display: none !important" type="button" class="btn btn-danger btn-sm deselect_labour">
+                                        <i class="far fa-times-circle"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>

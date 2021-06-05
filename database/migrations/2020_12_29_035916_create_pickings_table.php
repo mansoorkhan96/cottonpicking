@@ -18,7 +18,7 @@ class CreatePickingsTable extends Migration
             $table->foreignId('pickingnumber_id')->constrained();
             $table->foreignId('labour_id')->constrained('users');
             $table->date('date');
-            $table->integer('kgs_picked')->nullable();
+            $table->double('kgs_picked')->nullable();
             $table->timestamps();
 
             $table->unique(['pickingnumber_id', 'labour_id', 'date']);
