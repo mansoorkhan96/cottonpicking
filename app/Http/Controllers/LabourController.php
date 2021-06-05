@@ -18,8 +18,7 @@ class LabourController extends Controller
     {
         $labours = User::where('user_id', auth()->user()->id)
             ->where('role_id', User::ROLES['LABOUR'])
-            ->get()
-            ->toArray();
+            ->get();
 
         return view('labours.index', compact(['labours']));
     }

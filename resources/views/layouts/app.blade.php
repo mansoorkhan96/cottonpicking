@@ -24,6 +24,7 @@
 
     {{-- Page CSS --}}
     @yield('css')
+    @livewireStyles
 </head>
 <body>
     <div id="app">
@@ -96,6 +97,7 @@
         </main>
     </div>
 
+    @livewireScripts
     {{-- Page Scripts --}}
     @yield('js')
 </body>

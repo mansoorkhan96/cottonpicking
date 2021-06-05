@@ -14,15 +14,19 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Name</th>
+                                <th>Is Active</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($farmers as $item)
                             <tr>
-                                <td>{{ $item['name'] }}</td>
+                                <td>{{ $item->name }}</td>
                                 <td>
-                                    <a href="{{ route('farmers.edit', $item['id']) }}" class="text-white btn btn-info btn-sm">Edit</a>
+                                    <livewire:update-is-active :user="$item" />
+                                </td>
+                                <td>
+                                    <a href="{{ route('farmers.edit', $item->id) }}" class="text-white btn btn-info btn-sm">Edit</a>
                                 </td>
                             </tr>
                             @endforeach

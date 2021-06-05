@@ -27,7 +27,8 @@ class PickingnumberController extends Controller
      */
     public function create()
     {
-        $farmers = User::where('user_id', auth()->user()->id)
+        $farmers = User::active()
+            ->where('user_id', auth()->user()->id)
             ->where('role_id', User::ROLES['FARMER'])
             ->latest()
             ->pluck('name', 'id');
@@ -70,7 +71,8 @@ class PickingnumberController extends Controller
      */
     public function edit(Pickingnumber $pickingnumber)
     {
-        $farmers = User::where('user_id', auth()->user()->id)
+        $farmers = User::active()
+            ->where('user_id', auth()->user()->id)
             ->where('role_id', User::ROLES['FARMER'])
             ->latest()
             ->pluck('name', 'id');

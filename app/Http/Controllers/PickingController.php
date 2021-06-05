@@ -24,7 +24,7 @@ class PickingController extends Controller
 
         $sql = 'SELECT labour_id, name
             FROM pickings
-            JOIN users on users.id = pickings.labour_id
+            JOIN users on users.id = pickings.labour_id AND users.is_active = 1
             WHERE pickingnumber_id = '.request()->id.' AND date IN (SELECT MAX(date) FROM pickings)';
 
         $current_picking_labour = DB::select($sql);
@@ -33,7 +33,8 @@ class PickingController extends Controller
             return $item->labour_id;
         }, $current_picking_labour);
 
-        $other_labour = User::where('role_id', User::ROLES['LABOUR'])
+        $other_labour = User::active()
+            ->where('role_id', User::ROLES['LABOUR'])
             ->whereNotIn('id', $current_picking_labour_ids)
             ->select('name', 'id')
             ->get()
@@ -128,7 +129,8 @@ class PickingController extends Controller
             return $item->labour_id;
         }, $pickings);
 
-        $other_labour = User::where('role_id', User::ROLES['LABOUR'])
+        $other_labour = User::active()
+            ->where('role_id', User::ROLES['LABOUR'])
             ->whereNotIn('id', $current_picking_labour_ids)
             ->select('name', 'id')
             ->get()

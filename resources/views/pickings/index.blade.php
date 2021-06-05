@@ -138,12 +138,8 @@
         </div>
     </div>
 </div>
-{{-- <livewire:add-labour-for-new-picking :other_labour="$other_labour" /> --}}
-{{-- @livewire('add-labour-for-new-picking', ['labour' => $labour]) --}}
 
 @endsection
-
-{{-- @livewireScripts --}}
 
 @section('js')
     <script>

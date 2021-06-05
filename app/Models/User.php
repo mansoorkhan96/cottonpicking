@@ -51,6 +51,11 @@ class User extends Authenticatable
         'LABOUR' => 3,
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     public function pickingnumber()
     {
         return $this->hasMany(Pickingnumber::class, 'landlord_id');
