@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
             [
                 'user_id' => 1,
                 'role_id' => User::ROLES['FARMER'],
-                'name' => 'Farmer',
+                'name' => 'Rasheed',
                 'email' => 'farmer@example.com',
                 'password' => Hash::make('123'),
             ],
