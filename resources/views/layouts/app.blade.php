@@ -1,114 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+        <!-- Styles -->
+        <link rel="stylesheet" href="{{ mix('css/dashboard.css') }}">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/jquery-3.5.1.min.js') }}" ></script>
-    <script src="{{ asset('js/app.js') }}" ></script>
+        @livewireStyles
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+        <!-- Scripts -->
+        <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script>
+        <script src="{{ mix('js/dashboard.js') }}" defer></script>
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    <link rel="stylesheet" href="{{ asset('css/fontawesome/css/all.min.css') }}">
-
-    {{-- Page CSS --}}
-    @yield('css')
-    @livewireStyles
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+        @stack('styles')
+    </head>
+    <body class="c-app font-sans antialiased">
+        <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+            <div class="c-sidebar-brand">
+                <a href="/">
+                    <x-jet-application-mark class="c-sidebar-brand-minimized" width="36" />
+                    <x-jet-application-mark class="c-sidebar-brand-full" width="36" />
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+            </div>
+
+            <ul class="c-sidebar-nav">
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link" href="{{ route('farmers.index') }}">
+                        <svg class="c-sidebar-nav-icon">
+                            <use href="{{ asset('assets/icons/coreui/free-symbol-defs.svg') }}#cui-user">
+                            </use>
+                        </svg> Farmers
+                    </a>
+                </li>
+
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link" href="{{ route('labours.index') }}">
+                        <svg class="c-sidebar-nav-icon">
+                            <use href="{{ asset('assets/icons/coreui/free-symbol-defs.svg') }}#cui-user">
+                            </use>
+                        </svg> Labours
+                    </a>
+                </li>
+
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link" href="{{ route('pickingnumbers.index') }}">
+                        <svg class="c-sidebar-nav-icon">
+                            <use href="{{ asset('assets/icons/coreui/free-symbol-defs.svg') }}#cui-book">
+                            </use>
+                        </svg> Picking Numbers
+                    </a>
+                </li>
+            </ul>
+
+            <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
+        </div>
+        <div class="c-wrapper">
+            <header class="c-header c-header-light c-header-fixed c-header-with-subheader">
+                <button class="c-header-toggler c-class-toggler d-lg-none mr-auto" type="button" data-target="#sidebar" data-class="c-sidebar-show">
+                    <span class="c-header-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        @auth
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('farmers.index') }}">{{ __('Farmers') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('labours.index') }}">{{ __('Labours') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('pickingnumbers.index') }}">{{ __('Picking Numbers') }}</a>
-                            </li>
-                        @endauth
-                    </ul>
+                <button class="c-header-toggler c-class-toggler ml-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true">
+                    <span class="c-header-toggler-icon"></span>
+                </button>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+                <ul class="c-header-nav d-md-down-none">
+                    <li class="c-header-nav-item px-3">
+                        <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-jet-nav-link>
+                    </li>
+                </ul>
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+                @livewire('navigation-menu')
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                <div class="c-subheader px-3 py-3">
+                    <div class="container">
+                        {{ $header }}
+                    </div>
                 </div>
+            </header>
+
+            <div class="c-body">
+                <main class="c-main">
+                    <div class="container">
+                        <x-jet-validation-errors class="m-3" />
+
+                        <div class="row fade-in">
+                            <div class="col">
+                                {{ $slot }}
+                            </div>
+
+                            @if (isset($aside))
+                                <div class="col-lg-3">
+                                    {{ $aside ?? '' }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </main>
+
+                <footer class="c-footer">
+                <div>
+                    <a href="https://jetstream.laravel.com/1.x/introduction.html">Jetstream</a> © 2020 Laravel.
+                </div>
+                <div class="ml-auto">Powered by&nbsp;<a href="https://coreui.io/">CoreUI</a></div>
+                </footer>
             </div>
-        </nav>
+        </div>
 
-        <main class="py-4">
-            <div class="container">
-                @if(session('success'))
-                    <p class="alert alert-success">{{ session('success') }}</p>
-                @endif
-
-                @if(session('error'))
-                    <p class="alert alert-danger">{{ session('error') }}</p>
-                @endif
-                <x-validation-errors />
-            </div>
-            @yield('content')
-        </main>
-    </div>
-
-    @livewireScripts
-    {{-- Page Scripts --}}
-    @yield('js')
-</body>
+        @stack('modals')
+        @livewireScripts
+        @stack('scripts')
+    </body>
 </html>
